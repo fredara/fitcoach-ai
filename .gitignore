@@ -7,6 +7,11 @@ dist
 */dist
 .vercel
 
+# Local data & tokens
+data/
+*/data/
+*.local.json
+
 # Environment variables
 .env
 .env.local
