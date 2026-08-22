@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useModal } from '../contexts/ModalContext';
 import { supabase } from '../config/supabase';
 import { api } from '../services/api';
-import { User, Shield, Check, Save, Watch, ExternalLink, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { User, Shield, Check, Save, Watch, ExternalLink, RefreshCw, AlertCircle, CheckCircle2, Smartphone } from 'lucide-react';
 
 export default function Profile() {
   const { session } = useAuth();
@@ -387,6 +387,27 @@ export default function Profile() {
               </button>
             );
           })}
+        </div>
+      </div>
+
+      {/* PWA App Installation Card */}
+      <div className="surface p-6 rounded-2xl border border-white/5 space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-accent/20 border border-accent/40 flex items-center justify-center text-accent shrink-0">
+            <Smartphone size={22} />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold">Instalar Proff IA en tu Celular (PWA)</h3>
+            <p className="text-xs opacity-60 mt-0.5">Usa la aplicación a pantalla completa como una app nativa en iOS o Android</p>
+          </div>
+        </div>
+
+        <div className="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-2.5 text-xs">
+          <p className="font-semibold text-white/90">📲 Instrucciones rápidas:</p>
+          <ul className="list-disc pl-4 space-y-1 text-white/70">
+            <li><strong>En Android (Chrome):</strong> Toca los 3 puntos (⋮) arriba a la derecha y selecciona <em>"Instalar aplicación"</em> o <em>"Añadir a la pantalla principal"</em>.</li>
+            <li><strong>En iPhone / iPad (Safari):</strong> Toca el icono de Compartir (⬆️) en la barra inferior y selecciona <em>"Añadir a la pantalla de inicio"</em>.</li>
+          </ul>
         </div>
       </div>
 

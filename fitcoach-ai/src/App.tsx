@@ -37,6 +37,8 @@ function AppRoutes() {
   );
 }
 
+import PWAInstallBanner from './components/PWAInstallBanner';
+
 export default function App() {
   return (
     <AuthProvider>
@@ -44,6 +46,7 @@ export default function App() {
         <PlanProvider>
           <Router>
             <AppRoutes />
+            <PWAInstallBanner />
           </Router>
         </PlanProvider>
       </ModalProvider>
