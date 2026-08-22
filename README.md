@@ -1,6 +1,6 @@
 # 🏃‍♂️ FitCoach AI — Tu Entrenador Personal Inteligente para Running y Fútbol
 
-> **Desarrollado y Creado por [Freddy Ramirez](https://github.com/fredara)**
+> **Desarrollado y Creado por [Freddy Ramirez](https://www.linkedin.com/in/freddyramirezv/)**
 
 FitCoach AI es una plataforma moderna, inteligente y 100% responsive diseñada para atletas que buscan optimizar su rendimiento físico y alcanzar objetivos ambiciosos (como quebrar la barrera de los **4:30 min/km** en 10K/5K). Integra modelos de Inteligencia Artificial Multimodal para interpretar capturas de pantalla de relojes deportivos (Huawei Health, Garmin, Strava, Polar, Apple Watch), estructurar entrenamientos por bloques fisiológicos y ofrecer diagnósticos técnicos en tiempo real.
 
@@ -31,14 +31,14 @@ FitCoach AI es una plataforma moderna, inteligente y 100% responsive diseñada p
 * **Entorno:** Node.js + Express + TypeScript
 * **IA & Visión:** Fireworks AI (`qwen3p7-plus` / `llama-v3p3-70b-instruct`)
 * **Base de Datos & Auth:** Supabase (PostgreSQL + Row Level Security + Auth)
-* **Despliegue:** Vercel Serverless Functions
+* **Despliegue:** Serverless Functions
 
 ---
 
 ## 📁 Estructura del Proyecto (Monorepo)
 
 ```text
-├── api/                    # Entrypoint Serverless para Vercel Functions
+├── api/                    # Entrypoint Serverless
 │   └── index.ts
 ├── fitcoach-ai/            # Aplicación Frontend (Vite + React SPA)
 │   ├── public/             # Iconos, Manifest PWA y Service Worker
@@ -111,25 +111,9 @@ npm run dev --workspace=fitcoach-api
 
 ---
 
-## ☁️ Despliegue en Vercel
-
-1. Sube tu repositorio a GitHub.
-2. Importa el proyecto en [Vercel](https://vercel.com).
-3. Añade las variables de entorno en **Settings > Environment Variables**:
-   * `VITE_SUPABASE_URL`
-   * `VITE_SUPABASE_ANON_KEY`
-   * `VITE_GOOGLE_CLIENT_ID`
-   * `SUPABASE_URL`
-   * `SUPABASE_SERVICE_KEY`
-   * `FIREWORKS_API_KEY`
-   * `AI_MODEL`
-4. Haz clic en **Deploy**. Vercel detectará el archivo `vercel.json` y compilará tanto la SPA como las funciones serverless de la API en la misma URL.
-
----
-
 ## 👤 Autor
 
-* **Creador & Desarrollador Principal:** [Freddy Ramirez](https://github.com/fredara)
+* **Creador & Desarrollador Principal:** [Freddy Ramirez](https://www.linkedin.com/in/freddyramirezv/)
 * **Proyecto:** FitCoach AI Platform
 
 ---
