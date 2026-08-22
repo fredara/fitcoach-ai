@@ -22,7 +22,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.get('/api/health', (_req, res) => {
   res.json({
     status: 'ok',
-    service: 'FitCoach AI API',
+    service: 'Proff IA API',
     version: '1.0.0',
     timestamp: new Date().toISOString(),
   });
@@ -47,7 +47,7 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
 
 if (!process.env.VERCEL && process.env.NODE_ENV !== 'test') {
   app.listen(config.port, () => {
-    console.log(`🚀 FitCoach API corriendo en http://localhost:${config.port}`);
+    console.log(`🚀 Proff IA API corriendo en http://localhost:${config.port}`);
     console.log(`🤖 Fireworks AI Coach listo`);
   });
 }
