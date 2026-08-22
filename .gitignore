@@ -21,6 +21,12 @@ data/
 .env.*.local
 *.env
 
+# Planning & Internal docs
+PLAN.md
+implementation_plan.md
+*/PLAN.md
+*/implementation_plan.md
+
 # Logs and system files
 npm-debug.log*
 yarn-debug.log*
