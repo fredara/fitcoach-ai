@@ -1,0 +1,37 @@
+name: FitCoach AI - CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-and-build:
+    name: Validate, Typecheck & Build Monorepo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies (Workspaces)
+        run: npm ci
+
+      - name: 🔨 Typecheck & Build Backend API (fitcoach-api)
+        run: npm run build --workspace=fitcoach-api
+
+      - name: ⚡ Typecheck & Build Frontend SPA (fitcoach-ai)
+        run: npm run build --workspace=fitcoach-ai
+        env:
+          VITE_SUPABASE_URL: https://vigysldjqwoylhmpewov.supabase.co
+          VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpZ3lzbGRqcXdveWxobXBld292Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMDA1MzMsImV4cCI6MjEwMjY3NjUzM30.ZlSkJUqeU9lr6ngna7iDfe3xpDPvWJji96Q7sOTgWGk
+
+      - name: ✅ CI Status Report
+        run: echo "🎉 All validation checks passed successfully! Vercel will trigger automatic production deployment."
