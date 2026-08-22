@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '../config/supabase';
 
 export interface TrainingDay {
   day_name: string;
@@ -69,344 +70,436 @@ export const INITIAL_6_WEEK_PLAN: TrainingPlan = {
           cooldown: '3 a 5 minutos de caminata suave a Zona 2. (Recuerda detener el reloj justo al terminar).',
           target_distance_km: '4.5',
           target_duration_min: '35',
-          target_pace: "5'00\" - 5'25\" /km (en series)",
-          target_hr_zone: 'Zona 4-5 (Series) / Zona 2 (Calentamiento y recuperación)',
-          nutrition_tip: '500ml agua con electrolitos y carbohidrato simple 20 min antes.',
+          target_pace: '5\'00" - 5\'25" /km (en series)',
+          target_hr_zone: 'Zona 4-5 en series / Zona 2 calentamiento',
+          technical_focus: 'Frecuencia de zancada alta, zancadas rápidas y contacto de metatarso sin talonear.',
+          nutrition_tip: '500 ml de agua con una pizca de sal marina o electrolitos 20 minutos antes.',
           completed: false,
         },
         {
           day_name: 'Día 2: Jueves',
           sport: 'running',
           title: 'Carrera Base (Desarrollo Aeróbico)',
-          objective: 'Desarrollar tu red capilar y enseñar al cuerpo a usar la grasa como combustible, manteniendo el corazón en una zona segura de baja intensidad.',
-          main_block: '35 a 45 minutos continuos de trote.',
-          technical_focus: 'Concéntrate exclusivamente en mantener pasos cortos y una cadencia alta (alrededor de 160 pasos por minuto) para proteger tus articulaciones.',
-          target_duration_min: '35-45',
-          target_pace: "8'00\" - 8'30\" /km (Muy suave y conversacional)",
-          target_hr_zone: 'Zona 2 (115 - 133 ppm)',
-          nutrition_tip: 'Hidratación previa adecuada. No requiere geles durante el entrenamiento.',
+          objective: 'Desarrollar red capilar periférica y acostumbrar al cuerpo a quemar grasa manteniendo pulsaciones controladas.',
+          warmup: '5 minutos de movilidad articular de tobillos, rodillas y cadera.',
+          main_block: '35 a 45 minutos continuos de trote a ritmo estrictamente conversacional.',
+          recovery: 'Sin pausas intermedias.',
+          cooldown: '5 minutos de caminata suave y respiración diafragmática profunda.',
+          target_distance_km: '5.0',
+          target_duration_min: '40',
+          target_pace: '8\'00" - 8\'30" /km (Conversacional)',
+          target_hr_zone: 'Zona 2 estricta (115 - 133 ppm)',
+          technical_focus: 'Cadencia constante (~160 spm), pasos cortos y postura erguida. Si las pulsaciones superan 135 ppm, camina 30 segundos.',
+          nutrition_tip: 'Buena hidratación durante el día; comida ligera rica en carbohidratos 2 horas antes.',
           completed: false,
         },
         {
           day_name: 'Día 3: Sábado',
           sport: 'running',
           title: 'Ritmo Umbral (Tempo Controlado)',
-          objective: 'Acostumbrar a las piernas a sostener un ritmo más ágil reciclando el ácido láctico sin llegar al agotamiento total.',
-          warmup: '10 minutos de trote suave.',
-          main_block: '3 series de 5 minutos a ritmo sostenido y controlado (entre 7\'00" y 7\'15"/km).',
-          recovery: '2 minutos de caminata obligatoria entre cada bloque de 5 min para bajar pulsaciones y relajar el diafragma.',
-          cooldown: '3 a 5 minutos de caminata.',
-          target_duration_min: '40',
-          target_pace: "7'00\" - 7'15\" /km (en bloques tempo)",
-          target_hr_zone: 'Zona 3-4 (Umbral anaeróbico)',
-          nutrition_tip: 'Desayuno ligero con avena y plátano 90 min antes.',
+          objective: 'Acostumbrar las piernas y la mente a sostener un ritmo ágil reciclando el ácido láctico eficientemente.',
+          warmup: '10 minutos de trote suave en Zona 2.',
+          main_block: '3 series de 5 minutos a ritmo sostenido (entre 7\'00" y 7\'15"/km).',
+          recovery: '2 minutos de caminata obligatoria entre cada bloque de 5 min.',
+          cooldown: '3 a 5 minutos de caminata suave para retornar a pulso basal.',
+          target_distance_km: '4.5',
+          target_duration_min: '38',
+          target_pace: '7\'00" - 7\'15" /km (Ritmo Tempo)',
+          target_hr_zone: 'Zona 3-4 (135 - 152 ppm)',
+          technical_focus: 'Respiración rítmica (2 pasos inhalar, 2 pasos exhalar) y mirada al horizonte.',
+          nutrition_tip: 'Desayuno ligero 90 minutos antes (plátano con café o avena).',
           completed: false,
         },
         {
           day_name: 'Día 4: Domingo',
           sport: 'running',
-          title: 'Tirada Larga (Resistencia Pura)',
-          objective: 'Sumar volumen y tiempo sobre los pies para desarrollar hipertrofia cardíaca (un corazón más fuerte) y resistencia mental.',
-          main_block: '6 kilómetros continuos.',
-          technical_focus: 'Regla de Oro: Prohibido acelerar. Aquí no importa el reloj, solo importa completar la distancia manteniendo la cadencia fluida sin que las pulsaciones se disparen.',
+          title: 'Tirada Larga Aeróbica (Fondo & Resistencia)',
+          objective: 'Construir resistencia mental y mitocondrial para sostener distancias superiores a 5 km sin fatiga excesiva.',
+          warmup: '5 minutos de caminata rápida previa.',
+          main_block: '6.0 kilómetros continuos a ritmo muy suave y controlado.',
+          recovery: 'Continuo sin paradas obligatorias.',
+          cooldown: '5 minutos de caminata y estiramientos suaves de gemelos, isquiotibiales y cuádriceps.',
           target_distance_km: '6.0',
           target_duration_min: '50',
-          target_pace: "8'15\" - 8'30\" /km (Lento y relajado)",
-          target_hr_zone: 'Zona 2 estricta (115 - 133 ppm)',
-          nutrition_tip: '300ml de agua con electrolitos cada 20 min de carrera.',
+          target_pace: '8\'15" - 8\'35" /km',
+          target_hr_zone: 'Zona 2 (118 - 133 ppm)',
+          technical_focus: 'Economía de carrera: hombros relajados, brazos en 90° sin cruzar el pecho.',
+          nutrition_tip: 'Llevar botella de agua si hace calor; consumir carbohidratos y proteína en los 30 min post-entreno.',
           completed: false,
         },
       ],
     },
     {
       week_number: 2,
-      focus: 'Aumento de repeticiones a 10x200m y consolidación de base en 45 min',
+      focus: 'Consolidación de volumen y mayor eficiencia en Zona 2',
       completed: false,
       days: [
         {
           day_name: 'Día 1: Martes',
           sport: 'running',
-          title: 'Intervalos Cortos (10 x 200m)',
-          objective: 'Aumentar densidad de repeticiones a ritmo vivo para consolidar técnica de zancada eficiente.',
-          warmup: '10 min de trote muy suave a Zona 2 (115-133 ppm) + movilidad dinámica.',
+          title: 'Series Cortas de Velocidad (200m)',
+          objective: 'Afianzar la zancada rápida y tolerancia a la velocidad.',
+          warmup: '10 min trote suave Z2.',
           main_block: '10 repeticiones de 200m a ritmo entre 4\'55" y 5\'20"/km.',
-          recovery: '1 minuto de caminata activa entre repeticiones (<115 ppm).',
-          cooldown: '5 min de caminata suave.',
-          target_pace: "4'55\" - 5'20\" /km",
-          target_hr_zone: 'Zona 4-5 en series',
-          nutrition_tip: 'Electrolitos antes de iniciar.',
+          recovery: '1 min caminata activa entre repeticiones.',
+          cooldown: '5 min caminata suave.',
+          target_distance_km: '5.0',
+          target_duration_min: '40',
+          target_pace: '4\'55" - 5\'20" /km',
+          target_hr_zone: 'Zona 4-5',
+          technical_focus: 'Empuje fuerte de tobillo y brazada compacta.',
+          nutrition_tip: 'Electrolitos antes de salir.',
           completed: false,
         },
         {
           day_name: 'Día 2: Jueves',
           sport: 'running',
-          title: 'Carrera Base (45 min Continuos)',
-          objective: 'Incrementar la densidad mitocondrial y volumen en Zona 2.',
-          main_block: '45 minutos continuos de trote suave.',
-          technical_focus: 'Cadencia 160-165 spm, apoyo de mediopié y postura erguida.',
-          target_duration_min: '45',
-          target_pace: "7'50\" - 8'20\" /km",
-          target_hr_zone: 'Zona 2 (115 - 133 ppm)',
-          nutrition_tip: '500ml de agua con sales pre-entreno.',
+          title: 'Rodaje Z2 & Fútbol / Movilidad',
+          objective: 'Recuperación activa y agilidad de piernas.',
+          warmup: '5 min movilidad articular.',
+          main_block: '40 min de trote conversacional continuo.',
+          recovery: 'Continuo.',
+          cooldown: '5 min estiramientos.',
+          target_distance_km: '4.8',
+          target_duration_min: '40',
+          target_pace: '8\'00" - 8\'25" /km',
+          target_hr_zone: 'Zona 2 (115-133 ppm)',
+          technical_focus: 'Pisar justo debajo del centro de gravedad.',
+          nutrition_tip: 'Hidratación abundante durante la jornada.',
           completed: false,
         },
         {
           day_name: 'Día 3: Sábado',
           sport: 'running',
-          title: 'Tempo de Umbral (3 x 6 min)',
-          objective: 'Extender el tiempo bajo aclaramiento de lactato a ritmo alegre.',
+          title: 'Tempo Progresivo',
+          objective: 'Aprender a cerrar los entrenamientos más rápido de lo que se inicia.',
           warmup: '10 min trote suave.',
-          main_block: '3 series de 6 minutos a ritmo de 6\'50" - 7\'05"/km.',
-          recovery: '2 minutos de caminata activa.',
-          cooldown: '5 min de enfriamiento.',
-          target_pace: "6'50\" - 7'05\" /km",
-          target_hr_zone: 'Zona 3-4',
-          nutrition_tip: 'Carbohidratos complejos 2 horas antes.',
+          main_block: '20 min continuos: 10 min a 7\'30"/km + 10 min a 6\'50"/km.',
+          recovery: 'Continuo.',
+          cooldown: '5 min caminata.',
+          target_distance_km: '4.8',
+          target_duration_min: '35',
+          target_pace: '7\'30" ➔ 6\'50" /km',
+          target_hr_zone: 'Zona 3 a Zona 4',
+          technical_focus: 'Incrementar cadencia en los últimos 10 minutos.',
+          nutrition_tip: 'Un café solo o té verde 30 min antes.',
           completed: false,
         },
         {
           day_name: 'Día 4: Domingo',
           sport: 'running',
-          title: 'Tirada Larga Aeróbica (7 km)',
-          objective: 'Aumento progresivo de 1 km de fondo puro.',
-          main_block: '7 kilómetros continuos a ritmo constante.',
-          technical_focus: 'Respiración rítmica y hombros relajados.',
-          target_distance_km: '7.0',
-          target_pace: "8'10\" - 8'25\" /km",
-          target_hr_zone: 'Zona 2 estricta',
-          nutrition_tip: 'Llevar hidratación para sorbos cada 15-20 min.',
+          title: 'Tirada Larga de Resistencia (6.5 km)',
+          objective: 'Incrementar la capacidad aeróbica máxima.',
+          warmup: '5 min caminata.',
+          main_block: '6.5 km continuos en Zona 2 pura.',
+          recovery: 'Continuo.',
+          cooldown: '5 min caminata suave.',
+          target_distance_km: '6.5',
+          target_duration_min: '55',
+          target_pace: '8\'10" - 8\'30" /km',
+          target_hr_zone: 'Zona 2 (118-133 ppm)',
+          technical_focus: 'Mantener la respiración nasal o conversacional fluida.',
+          nutrition_tip: 'Comida rica en carbohidratos complejos la noche anterior.',
           completed: false,
         },
       ],
     },
     {
       week_number: 3,
-      focus: 'Transición a series medias: 6x400m y tempo de 15 min continuo',
+      focus: 'Transición a series medianas de 400m y control de lactato',
       completed: false,
       days: [
         {
           day_name: 'Día 1: Martes',
           sport: 'running',
-          title: 'Series de 400m (6 x 400m @ 4:45/km)',
-          objective: 'Desarrollar tolerancia a la fatiga en distancias medias a ritmo objetivo.',
-          warmup: '12 min trote + 3 progresiones de 50m.',
-          main_block: '6 repeticiones de 400m entre 4\'40" y 4\'55"/km.',
+          title: 'Series Medianas (400m VO₂ Max)',
+          objective: 'Sostener ritmos rápidos durante distancias más largas.',
+          warmup: '10 min trote suave.',
+          main_block: '6 repeticiones de 400 metros a ritmo de 5\'10" - 5\'30"/km.',
           recovery: '90 segundos de caminata activa.',
-          cooldown: '5 min trote suave y caminata.',
-          target_pace: "4'40\" - 4'55\" /km",
-          target_hr_zone: 'Zona 4-5',
-          nutrition_tip: '1 gel o dátiles 15 min antes.',
+          cooldown: '5 min caminata.',
+          target_distance_km: '5.2',
+          target_duration_min: '42',
+          target_pace: '5\'10" - 5\'30" /km',
+          target_hr_zone: 'Zona 4',
+          technical_focus: 'Ritmo uniforme en cada serie, sin empezar demasiado rápido.',
+          nutrition_tip: 'Electrolitos antes de empezar.',
           completed: false,
         },
         {
           day_name: 'Día 2: Jueves',
           sport: 'running',
-          title: 'Rodaje Regenerativo & Cadencia (40 min)',
-          objective: 'Recuperación activa y eficiencia biomecánica.',
-          main_block: '40 minutos a ritmo muy suave.',
-          technical_focus: 'Buscar 165 pasos por minuto constantes.',
+          title: 'Carrera Base Regenerativa',
+          objective: 'Eliminar fatiga residual muscular y vascular.',
+          warmup: '5 min movilidad.',
+          main_block: '40 min a pulso bajo en Zona 2.',
+          recovery: 'Continuo.',
+          cooldown: '5 min caminata.',
+          target_distance_km: '4.8',
           target_duration_min: '40',
-          target_pace: "8'00\" - 8'30\" /km",
-          target_hr_zone: 'Zona 2 baja (<125 ppm)',
-          nutrition_tip: 'Batido hidratante posterior con fruta.',
+          target_pace: '8\'15" - 8\'40" /km',
+          target_hr_zone: 'Zona 2 (<130 ppm)',
+          technical_focus: 'Relajación de brazos, cuello y mandíbula.',
+          nutrition_tip: 'Hidratación con sales.',
           completed: false,
         },
         {
           day_name: 'Día 3: Sábado',
           sport: 'running',
-          title: 'Bloque Continuo de Tempo (15 min @ 6:35/km)',
-          objective: 'Sostener el umbral anaeróbico sin pausas intermedias.',
-          warmup: '10 min trote suave.',
-          main_block: '15 minutos continuos a ritmo 6\'35" - 6\'50"/km.',
-          cooldown: '8 min de trote muy lento y caminata.',
-          target_pace: "6'35\" - 6'50\" /km",
+          title: 'Bloques de Umbral Anaeróbico (3x 1 km)',
+          objective: 'Simular sensaciones de carrera exigente.',
+          warmup: '10 min trote.',
+          main_block: '3 repeticiones de 1000m (1 km) a 6\'30" - 6\'45"/km.',
+          recovery: '2 minutos de caminata entre cada km.',
+          cooldown: '5 min caminata.',
+          target_distance_km: '5.5',
+          target_duration_min: '40',
+          target_pace: '6\'30" - 6\'45" /km',
           target_hr_zone: 'Zona 4',
-          nutrition_tip: 'Desayuno rico en glucógeno.',
+          technical_focus: 'Control mental cuando las piernas comiencen a pesar.',
+          nutrition_tip: 'Carbohidratos de absorción media 1 hora antes.',
           completed: false,
         },
         {
           day_name: 'Día 4: Domingo',
           sport: 'running',
-          title: 'Tirada Larga (8 km)',
-          objective: 'Incrementar resistencia de base a 8 kilómetros.',
-          main_block: '8 kilómetros a ritmo controlado.',
-          technical_focus: 'Economía de carrera y respiración controlada.',
-          target_distance_km: '8.0',
-          target_pace: "8'00\" - 8'20\" /km",
+          title: 'Tirada Larga Aeróbica (7.0 km)',
+          objective: 'Desarrollar gran solidez cardiovascular.',
+          warmup: '5 min caminata.',
+          main_block: '7.0 km continuos a ritmo conversacional.',
+          recovery: 'Continuo.',
+          cooldown: '5 min caminata y movilidad.',
+          target_distance_km: '7.0',
+          target_duration_min: '58',
+          target_pace: '8\'00" - 8\'25" /km',
           target_hr_zone: 'Zona 2',
-          nutrition_tip: '1 gel en el km 5 + agua con sales.',
+          technical_focus: 'Pisar con suavidad para proteger las articulaciones.',
+          nutrition_tip: 'Recuperador con proteína y carbohidratos tras finalizar.',
           completed: false,
         },
       ],
     },
     {
       week_number: 4,
-      focus: 'Series de 800m y aumento de velocidad crucero en tempo',
+      focus: 'Pico de volumen y adaptación específica al ritmo de carrera',
       completed: false,
       days: [
         {
           day_name: 'Día 1: Martes',
           sport: 'running',
-          title: 'Series de 800m (4 x 800m @ 4:40/km)',
-          objective: 'Estimular consumo máximo de oxígeno en repeticiones largas.',
-          warmup: '12 min trote + estiramientos dinámicos.',
-          main_block: '4 series de 800m a ritmo 4\'35" - 4\'45"/km.',
-          recovery: '2 minutos de caminata activa.',
+          title: 'Pirámide de Velocidad (200m - 400m - 600m - 400m - 200m)',
+          objective: 'Desarrollar potencia neuromuscular y cambios de ritmo.',
+          warmup: '10 min trote suave.',
+          main_block: 'Pirámide: 200m (4:50) - 400m (5:15) - 600m (5:30) - 400m (5:15) - 200m (4:45).',
+          recovery: '90 segundos de caminata entre series.',
           cooldown: '5 min caminata.',
-          target_pace: "4'35\" - 4'45\" /km",
+          target_distance_km: '5.5',
+          target_duration_min: '45',
+          target_pace: '4\'45" - 5\'30" /km según tramo',
           target_hr_zone: 'Zona 4-5',
-          nutrition_tip: 'Carbohidratos 1h antes.',
+          technical_focus: 'Aceleración progresiva en la última repetición.',
+          nutrition_tip: 'Hidratación óptima previa.',
           completed: false,
         },
         {
           day_name: 'Día 2: Jueves',
           sport: 'running',
-          title: 'Carrera Base (45 min)',
-          objective: 'Consolidación aeróbica.',
-          main_block: '45 minutos en Zona 2.',
-          target_duration_min: '45',
-          target_pace: "7'45\" - 8'15\" /km",
+          title: 'Rodaje Suave Z2',
+          objective: 'Asimilar las series y limpiar lactato.',
+          warmup: '5 min movilidad.',
+          main_block: '40 min continuos en Zona 2.',
+          recovery: 'Continuo.',
+          cooldown: '5 min caminata.',
+          target_distance_km: '4.8',
+          target_duration_min: '40',
+          target_pace: '8\'10" - 8\'30" /km',
           target_hr_zone: 'Zona 2',
-          nutrition_tip: 'Hidratación completa.',
+          technical_focus: 'Mantener cadencia cercana a 160 spm.',
+          nutrition_tip: 'Abundante agua y sales minerales.',
           completed: false,
         },
         {
           day_name: 'Día 3: Sábado',
           sport: 'running',
-          title: 'Tempo Sostenido (20 min @ 6:15/km)',
-          objective: 'Aumentar velocidad crucero en umbral.',
+          title: 'Tempo Continuo (4 km a Ritmo Vivo)',
+          objective: 'Prueba de resistencia a velocidad sostenida.',
           warmup: '10 min trote suave.',
-          main_block: '20 minutos continuos a 6\'15" - 6\'30"/km.',
-          cooldown: '8 min enfriamiento.',
-          target_pace: "6'15\" - 6'30\" /km",
+          main_block: '4.0 km continuos a ritmo sostenido entre 6\'15" y 6\'30"/km.',
+          recovery: 'Continuo.',
+          cooldown: '5 min caminata.',
+          target_distance_km: '5.5',
+          target_duration_min: '40',
+          target_pace: '6\'15" - 6\'30" /km',
           target_hr_zone: 'Zona 4',
-          nutrition_tip: 'Snack energético previo.',
+          technical_focus: 'Empuje simétrico de ambas piernas.',
+          nutrition_tip: 'Comida energética previa.',
           completed: false,
         },
         {
           day_name: 'Día 4: Domingo',
           sport: 'running',
-          title: 'Tirada Larga Progresiva (9 km)',
-          objective: 'Resistencia pura terminando el último km a ritmo más vivo.',
-          main_block: '9 kilómetros: 8 km en Zona 2 + último km a 6:00/km.',
-          target_distance_km: '9.0',
-          target_pace: "7'50\" - 8'15\" /km",
-          target_hr_zone: 'Zona 2-3',
-          nutrition_tip: '1 gel en el km 5 + bebida isotónica.',
+          title: 'Tirada Larga Máxima del Ciclo (7.5 km)',
+          objective: 'Mayor volumen aeróbico del macrociclo.',
+          warmup: '5 min caminata.',
+          main_block: '7.5 km en Zona 2 estricta.',
+          recovery: 'Continuo.',
+          cooldown: '5 min caminata.',
+          target_distance_km: '7.5',
+          target_duration_min: '62',
+          target_pace: '8\'15" - 8\'35" /km',
+          target_hr_zone: 'Zona 2',
+          technical_focus: 'Zancada económica sin elevar excesivamente las rodillas.',
+          nutrition_tip: 'Desayuno completo 2 horas antes.',
           completed: false,
         },
       ],
     },
     {
       week_number: 5,
-      focus: 'Fase Pico de Potencia VO2max: Series específicas a 4:30/km',
+      focus: 'Afinación de ritmo objetivo Sub 4:30/km y series rápidas',
       completed: false,
       days: [
         {
           day_name: 'Día 1: Martes',
           sport: 'running',
-          title: 'Series Específicas (5 x 800m @ 4:30/km)',
-          objective: 'Aclimatar el cuerpo al ritmo objetivo exacto de carrera de 4:30 min/km.',
-          warmup: '15 min trote suave + 4 progresiones de 60m.',
-          main_block: '5 repeticiones de 800m exactamente a ritmo de 4\'30"/km.',
-          recovery: '2 minutos de caminata/trote muy suave.',
-          cooldown: '5 min caminata.',
-          target_pace: "4'30\" /km (Ritmo Objetivo)",
-          target_hr_zone: 'Zona 5 (Pico de VO2max)',
-          nutrition_tip: 'Carbohidratos rápidos 20 min antes.',
+          title: 'Series Específicas a Ritmo Objetivo (5x 300m a 4:30-4:40)',
+          objective: 'Memorizar el ritmo de competición sub 4:30 en las piernas.',
+          warmup: '10 min trote suave Z2.',
+          main_block: '5 repeticiones de 300m al ritmo objetivo de 4\'30" a 4\'45"/km.',
+          recovery: '2 minutos de caminata activa entre cada serie.',
+          cooldown: '5 min caminata suave.',
+          target_distance_km: '4.8',
+          target_duration_min: '38',
+          target_pace: '4\'30" - 4\'45" /km',
+          target_hr_zone: 'Zona 5',
+          technical_focus: 'Frecuencia de zancada alta y máxima reactividad al tocar el suelo.',
+          nutrition_tip: 'Electrolitos antes del entrenamiento.',
           completed: false,
         },
         {
           day_name: 'Día 2: Jueves',
           sport: 'running',
-          title: 'Rodaje Aeróbico Suave (40 min)',
-          objective: 'Asimilación del trabajo de potencia.',
-          main_block: '40 minutos a ritmo muy suave.',
-          target_duration_min: '40',
-          target_pace: "8'00\" - 8'30\" /km",
+          title: 'Rodaje de Mantenimiento Z2',
+          objective: 'Mantener las piernas frescas sin generar fatiga.',
+          warmup: '5 min movilidad.',
+          main_block: '35 min muy suaves en Zona 2.',
+          recovery: 'Continuo.',
+          cooldown: '5 min caminata.',
+          target_distance_km: '4.2',
+          target_duration_min: '35',
+          target_pace: '8\'15" - 8\'40" /km',
           target_hr_zone: 'Zona 2',
-          nutrition_tip: 'Proteína y carbohidratos post-carrera.',
+          technical_focus: 'Correr completamente relajado.',
+          nutrition_tip: 'Hidratación balanceada.',
           completed: false,
         },
         {
           day_name: 'Día 3: Sábado',
           sport: 'running',
-          title: 'Fartlek Mixto (5K con cambios de ritmo)',
-          objective: 'Capacidad de acelerar con soltura aeróbica.',
-          warmup: '10 min trote.',
-          main_block: '5 km combinando 500m suaves / 500m a 4:40/km.',
-          cooldown: '6 min enfriamiento.',
-          target_pace: "Variable",
-          target_hr_zone: 'Zona 3-4',
-          nutrition_tip: 'Desayuno ligero.',
+          title: 'Test Progresivo Corto (3 km)',
+          objective: 'Medir la facilidad del pulso a ritmos vivos.',
+          warmup: '10 min trote suave.',
+          main_block: '3 km progresivos: km 1 a 6\'30", km 2 a 5\'45", km 3 a 5\'00"/km.',
+          recovery: 'Continuo.',
+          cooldown: '5 min caminata.',
+          target_distance_km: '4.5',
+          target_duration_min: '35',
+          target_pace: '6\'30" ➔ 5\'00" /km',
+          target_hr_zone: 'Zona 3 a 5',
+          technical_focus: 'Acelerar con suavidad sin tirones bruscos.',
+          nutrition_tip: 'Snack ligero con carbohidratos simples 45 min antes.',
           completed: false,
         },
         {
           day_name: 'Día 4: Domingo',
           sport: 'running',
-          title: 'Tirada Larga Máxima del Ciclo (10 km)',
-          objective: 'Pico máximo de volumen aeróbico del ciclo de 6 semanas.',
-          main_block: '10 kilómetros continuos y relajados.',
-          target_distance_km: '10.0',
-          target_pace: "7'55\" - 8'20\" /km",
+          title: 'Fondo de Control (5.5 km)',
+          objective: 'Fondo moderado para llegar fresco a la semana de test.',
+          warmup: '5 min caminata.',
+          main_block: '5.5 km en Zona 2.',
+          recovery: 'Continuo.',
+          cooldown: '5 min caminata.',
+          target_distance_km: '5.5',
+          target_duration_min: '45',
+          target_pace: '8\'10" - 8\'30" /km',
           target_hr_zone: 'Zona 2',
-          nutrition_tip: '2 tomas de hidratación / gel en km 4 y km 7.',
+          technical_focus: 'Postura impecable y respiración profunda.',
+          nutrition_tip: 'Comida rica en nutrientes post-entreno.',
           completed: false,
         },
       ],
     },
     {
       week_number: 6,
-      focus: 'Tapering, descanso activo y Test Oficial 5K Sub 4:30 min/km',
+      focus: 'Tapering, descarga activa y Test Oficial Sub 4:30/km',
       completed: false,
       days: [
         {
           day_name: 'Día 1: Martes',
           sport: 'running',
-          title: 'Activación con Progresiones (25 min + 4 rectas)',
-          objective: 'Mantener la reactividad de pies y tono nervioso sin fatigar.',
-          warmup: '15 min trote muy suave.',
-          main_block: '4 aceleraciones de 80m progresivas hasta 4:15/km con descanso total.',
-          cooldown: '5 min caminata.',
+          title: 'Activación & Progresivos (Descarga)',
+          objective: 'Despertar las fibras rápidas sin acumular fatiga.',
+          warmup: '10 min trote suave.',
+          main_block: '4 progresivos de 100 metros a ritmo vivo (4\'20" - 4\'35"/km) con descanso completo.',
+          recovery: '90 segundos de caminata.',
+          cooldown: '5 min caminata suave.',
+          target_distance_km: '3.5',
           target_duration_min: '25',
-          target_pace: "Suave + rectas vivas",
-          target_hr_zone: 'Zona 2-4',
-          nutrition_tip: 'Comida rica en carbohidratos limpios.',
+          target_pace: '4\'20" - 4\'35" /km en rectas',
+          target_hr_zone: 'Zona 4-5',
+          technical_focus: 'Zancada elegante, reactiva y potente.',
+          nutrition_tip: 'Hidratación completa durante todo el día.',
           completed: false,
         },
         {
           day_name: 'Día 2: Jueves',
           sport: 'running',
-          title: 'Trote Muy Ligero de Soltura (20 min)',
-          objective: 'Estimulación circulatoria y soltura muscular.',
-          main_block: '20 minutos de trote ultra suave en Zona 1-2.',
-          target_duration_min: '20',
-          target_pace: "8'30\" /km",
-          target_hr_zone: 'Zona 1-2',
-          nutrition_tip: 'Excelente descanso nocturno e hidratación.',
+          title: 'Trote Suave de Soltura (25 min)',
+          objective: 'Eliminar tensión muscular previa al test.',
+          warmup: '5 min movilidad.',
+          main_block: '20 a 25 min de trote muy regenerativo en Zona 2.',
+          recovery: 'Continuo.',
+          cooldown: '5 min estiramientos suaves.',
+          target_distance_km: '3.0',
+          target_duration_min: '25',
+          target_pace: '8\'20" - 8\'45" /km',
+          target_hr_zone: 'Zona 2 estricta (<125 ppm)',
+          technical_focus: 'Sensación de flotar y ligereza en los pies.',
+          nutrition_tip: 'Cena con buena carga de carbohidratos complejos.',
           completed: false,
         },
         {
-          day_name: 'Día 3: Viernes',
-          sport: 'rest',
-          title: 'Descanso Total Pre-Test',
-          objective: 'Llegar con los depósitos de glucógeno llenos y piernas 100% frescas.',
-          main_block: 'Día libre de entrenamientos. Caminata ligera opcional.',
-          nutrition_tip: 'Cena con pasta o arroz, proteína magra y 500ml de agua.',
+          day_name: 'Día 3: Sábado',
+          sport: 'running',
+          title: '🏆 Test Oficial: Bajar a 4:30/km',
+          objective: '¡Día de consagración! Aplicar todo el ciclo y quebrar la barrera de 4:30 min/km.',
+          warmup: '10 min trote suave Z2 + 3 aceleraciones cortas de 50m + movilidad articular.',
+          main_block: 'Test de 3 a 5 km a ritmo objetivo sostenido (< 4\'30" /km).',
+          recovery: 'Mantener ritmo constante.',
+          cooldown: '10 min de caminata lenta de celebración y respiración profunda.',
+          target_distance_km: '5.0',
+          target_duration_min: '22 - 25',
+          target_pace: '4\'20" - 4\'30" /km (Ritmo Objetivo)',
+          target_hr_zone: 'Zona 4-5',
+          technical_focus: '¡Confianza total en tu preparación! Cadencia alta y mentalidad de acero.',
+          nutrition_tip: 'Desayuno ligero 2h antes, 500ml agua con sales y actitud ganadora.',
           completed: false,
         },
         {
           day_name: 'Día 4: Domingo',
           sport: 'running',
-          title: '🏆 TEST OFICIAL DE 5K A RITMO OBJETIVO (Sub 4:30 /km)',
-          objective: '¡Día de prueba! Aplicar toda la base aeróbica y velocidad para marcar tu mejor registro a 4:30 min/km (Tiempo meta: 22:30).',
-          warmup: '10 min trote suave + movilidad articular + 3 rectas de activación.',
-          main_block: '5 Kilómetros continuos a ritmo objetivo de 4:30 min/km.',
-          cooldown: '10 min caminata y estiramientos.',
-          target_distance_km: '5.0',
-          target_pace: "4:30 min/km (Meta oficial)",
-          target_hr_zone: 'Zona 4-5',
-          nutrition_tip: 'Desayuno 2.5h antes. Gel 15 min antes de la salida.',
+          title: 'Caminata Regenerativa & Celebración',
+          objective: 'Recuperar el sistema neuromuscular tras el test oficial.',
+          warmup: 'Ninguno.',
+          main_block: '30 a 45 minutos de caminata relajada en la naturaleza o trote muy suave.',
+          recovery: 'Continuo.',
+          cooldown: 'Estiramientos completos de tren inferior.',
+          target_distance_km: '3.5',
+          target_duration_min: '40',
+          target_pace: 'Libre (Caminata / Soltura)',
+          target_hr_zone: 'Zona 1 (<115 ppm)',
+          technical_focus: 'Agradecer a tus piernas y celebrar tu progreso.',
+          nutrition_tip: 'Comida completa de celebración con buena proteína y carbohidratos.',
           completed: false,
         },
       ],
@@ -416,7 +509,7 @@ export const INITIAL_6_WEEK_PLAN: TrainingPlan = {
 
 interface PlanContextType {
   plan: TrainingPlan;
-  setPlan: (plan: TrainingPlan) => void;
+  setPlan: (newPlan: TrainingPlan) => void;
   updateDay: (weekNumber: number, dayIndex: number, updatedDay: TrainingDay) => void;
   addDay: (weekNumber: number, newDay: TrainingDay) => void;
   deleteDay: (weekNumber: number, dayIndex: number) => void;
@@ -444,14 +537,112 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
     return INITIAL_6_WEEK_PLAN;
   });
 
+  const persistPlan = async (newPlan: TrainingPlan) => {
+    localStorage.setItem('fitcoach_active_plan_v2', JSON.stringify(newPlan));
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user?.id) {
+        await supabase.from('training_plans').upsert({
+          user_id: session.user.id,
+          title: newPlan.title,
+          goal: newPlan.goal,
+          weeks_count: newPlan.weeks_count || 6,
+          days_per_week: newPlan.days_per_week || 4,
+          plan_data: newPlan,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'user_id' });
+      }
+    } catch (e) {
+      console.warn('Advertencia guardando plan en Supabase:', e);
+    }
+  };
+
+  useEffect(() => {
+    async function loadCloudPlanAndSessions() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user?.id) return;
+        const userId = session.user.id;
+
+        const { data: cloudPlanData, error: planErr } = await supabase
+          .from('training_plans')
+          .select('plan_data')
+          .eq('user_id', userId)
+          .maybeSingle();
+
+        let activePlan: TrainingPlan = plan;
+
+        if (!planErr && cloudPlanData?.plan_data?.weeks?.length === 6) {
+          activePlan = cloudPlanData.plan_data;
+          setPlanState(activePlan);
+          localStorage.setItem('fitcoach_active_plan_v2', JSON.stringify(activePlan));
+        }
+
+        const { data: sessions } = await supabase
+          .from('workout_sessions')
+          .select('*')
+          .eq('user_id', userId);
+
+        if (sessions && sessions.length > 0) {
+          setPlanState(prev => {
+            let hasChanges = false;
+            const newWeeks = prev.weeks.map(w => {
+              const newDays = w.days.map((d, dIdx) => {
+                const dayLinkKey = `${w.week_number}_${dIdx}`;
+                const isMatched = sessions.some(s => {
+                  const raw = s.raw_data || {};
+                  const titleMatch = s.title && (
+                    s.title.toLowerCase().includes(d.title.toLowerCase()) ||
+                    d.title.toLowerCase().includes(s.title.toLowerCase()) ||
+                    s.title.includes(`Semana ${w.week_number}`)
+                  );
+                  return raw.linked_plan_day === dayLinkKey || titleMatch;
+                });
+
+                if (isMatched && !d.completed) {
+                  hasChanges = true;
+                  return { ...d, completed: true };
+                }
+                return d;
+              });
+
+              const allCompleted = newDays.every(d => d.completed);
+              return { ...w, days: newDays, completed: allCompleted };
+            });
+
+            if (hasChanges) {
+              const completedWeeks = newWeeks.filter(w => w.completed).length;
+              const syncedPlan = { ...prev, weeks: newWeeks, completed_weeks_count: completedWeeks };
+              persistPlan(syncedPlan);
+              return syncedPlan;
+            }
+            return prev;
+          });
+        }
+      } catch (err) {
+        console.warn('Nota: Sincronización en la nube del plan:', err);
+      }
+    }
+
+    loadCloudPlanAndSessions();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        loadCloudPlanAndSessions();
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   const setPlan = (newPlan: TrainingPlan) => {
     setPlanState(newPlan);
-    localStorage.setItem('fitcoach_active_plan_v2', JSON.stringify(newPlan));
+    persistPlan(newPlan);
   };
 
   const resetToDefaultPlan = () => {
     setPlanState(INITIAL_6_WEEK_PLAN);
-    localStorage.setItem('fitcoach_active_plan_v2', JSON.stringify(INITIAL_6_WEEK_PLAN));
+    persistPlan(INITIAL_6_WEEK_PLAN);
   };
 
   const updateDay = (weekNumber: number, dayIndex: number, updatedDay: TrainingDay) => {
@@ -465,7 +656,7 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
         return w;
       });
       const updated = { ...prev, weeks: newWeeks };
-      localStorage.setItem('fitcoach_active_plan_v2', JSON.stringify(updated));
+      persistPlan(updated);
       return updated;
     });
   };
@@ -479,7 +670,7 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
         return w;
       });
       const updated = { ...prev, weeks: newWeeks };
-      localStorage.setItem('fitcoach_active_plan_v2', JSON.stringify(updated));
+      persistPlan(updated);
       return updated;
     });
   };
@@ -494,7 +685,7 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
         return w;
       });
       const updated = { ...prev, weeks: newWeeks };
-      localStorage.setItem('fitcoach_active_plan_v2', JSON.stringify(updated));
+      persistPlan(updated);
       return updated;
     });
   };
@@ -512,7 +703,7 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
       });
       const completedWeeks = newWeeks.filter(w => w.completed).length;
       const updated = { ...prev, weeks: newWeeks, completed_weeks_count: completedWeeks };
-      localStorage.setItem('fitcoach_active_plan_v2', JSON.stringify(updated));
+      persistPlan(updated);
       return updated;
     });
   };
@@ -529,7 +720,7 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
       });
       const completedWeeks = newWeeks.filter(w => w.completed).length;
       const updated = { ...prev, weeks: newWeeks, completed_weeks_count: completedWeeks };
-      localStorage.setItem('fitcoach_active_plan_v2', JSON.stringify(updated));
+      persistPlan(updated);
       return updated;
     });
   };
@@ -541,12 +732,10 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
       if (update.title) nextPlan.title = update.title;
       if (update.goal) nextPlan.goal = update.goal;
 
-      // Si viene un día específico
       if (update.updated_day) {
         const weekNum = update.week_number || prev.current_week || 1;
         nextPlan.weeks = nextPlan.weeks.map(w => {
           if (w.week_number === weekNum) {
-            // Reemplazar si coincide por nombre o insertar
             const targetDayName = update.day_name || update.updated_day.day_name;
             const existingIdx = w.days.findIndex(d => 
               d.day_name.toLowerCase().includes(targetDayName.toLowerCase()) ||
@@ -563,7 +752,6 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
           return w;
         });
       }
-      // Si vienen todos los días de una semana
       else if (update.days && Array.isArray(update.days)) {
         const weekNum = update.week_number || prev.current_week || 1;
         nextPlan.weeks = nextPlan.weeks.map(w => {
@@ -573,13 +761,12 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
           return w;
         });
       } 
-      // Si vienen las semanas completas
       else if (update.weeks && Array.isArray(update.weeks)) {
         nextPlan.weeks = update.weeks;
         nextPlan.weeks_count = 6;
       }
 
-      localStorage.setItem('fitcoach_active_plan_v2', JSON.stringify(nextPlan));
+      persistPlan(nextPlan);
       return nextPlan;
     });
   };

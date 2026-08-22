@@ -48,6 +48,39 @@ export const api = {
     return response.json();
   },
 
+  // Obtener plan activo desde backend / Supabase
+  async getActivePlan() {
+    try {
+      const headers = await getAuthHeader();
+      const response = await fetch(`${API_BASE_URL}/plans/active`, {
+        method: 'GET',
+        headers,
+      });
+
+      if (!response.ok) return null;
+      return response.json();
+    } catch {
+      return null;
+    }
+  },
+
+  // Guardar o sincronizar plan activo en la nube
+  async saveActivePlan(plan: any) {
+    try {
+      const headers = await getAuthHeader();
+      const response = await fetch(`${API_BASE_URL}/plans/active`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ plan }),
+      });
+
+      if (!response.ok) return null;
+      return response.json();
+    } catch {
+      return null;
+    }
+  },
+
   // Analizar entrenamiento con IA
   async analyzeSession(sessionData: any) {
     const headers = await getAuthHeader();
