@@ -22,7 +22,7 @@ function buildSystemPrompt(userContext?: UserContext): string {
   const name = userContext?.displayName || 'Freddy';
   const level = userContext?.fitnessLevel || 'intermedio';
 
-  return `Eres Coach AI (FitCoach), un entrenador de élite y fisiólogo deportivo de alto rendimiento con metodología híbrida estilo Runna + Strava Pro.
+  return `Eres Proff IA, el entrenador de élite y fisiólogo deportivo de alto rendimiento con metodología híbrida estilo Runna + Strava Pro.
 Estás entrenando a ${name} (Nivel: ${level}).
 
 ${userContext?.recentSessionsText ? `📊 HISTORIAL REAL DE ENTRENAMIENTOS DEL ATLETA:

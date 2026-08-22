@@ -46,7 +46,7 @@ export default function AppShell() {
       {/* Sidebar Desktop */}
       <aside className="hidden md:flex flex-col w-64 surface border-r border-white/5 p-4 shrink-0">
         <div className="mb-8 p-2 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-accent">FitCoach AI</h1>
+          <h1 className="text-2xl font-bold text-accent">Proff IA</h1>
           <span className="text-[10px] bg-accent/20 text-accent font-semibold px-2 py-0.5 rounded-full">v1.1</span>
         </div>
         
@@ -108,7 +108,7 @@ export default function AppShell() {
       <main className={`flex-1 flex flex-col min-h-0 ${isChatPage ? 'overflow-hidden' : 'overflow-y-auto'} pb-20 md:pb-0`}>
         <header className="md:hidden surface border-b border-white/5 p-4 flex justify-between items-center sticky top-0 z-10 shrink-0">
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-accent">FitCoach AI</h1>
+            <h1 className="text-xl font-bold text-accent">Proff IA</h1>
             {deferredPrompt && (
               <button
                 onClick={handleInstallPWA}

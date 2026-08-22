@@ -1,6 +1,6 @@
 {
-  "name": "FitCoach AI — Entrenador Deportivo",
-  "short_name": "FitCoach",
+  "name": "Proff IA — Entrenador Deportivo Inteligente",
+  "short_name": "Proff IA",
   "description": "Tu entrenador personal experto en running, fútbol y rendimiento físico.",
   "start_url": "/",
   "display": "standalone",

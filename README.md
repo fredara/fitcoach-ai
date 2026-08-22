@@ -1,8 +1,8 @@
-# 🏃‍♂️ FitCoach AI — Tu Entrenador Personal Inteligente para Running y Fútbol
+# 🏃‍♂️ Proff IA — Tu Entrenador Personal Inteligente para Running y Fútbol
 
 > **Desarrollado y Creado por [Freddy Ramirez](https://www.linkedin.com/in/freddyramirezv/)**
 
-FitCoach AI es una plataforma moderna, inteligente y 100% responsive diseñada para atletas que buscan optimizar su rendimiento físico y alcanzar objetivos ambiciosos (como quebrar la barrera de los **4:30 min/km** en 10K/5K). Integra modelos de Inteligencia Artificial Multimodal para interpretar capturas de pantalla de relojes deportivos (Huawei Health, Garmin, Strava, Polar, Apple Watch), estructurar entrenamientos por bloques fisiológicos y ofrecer diagnósticos técnicos en tiempo real.
+Proff IA es una plataforma moderna, inteligente y 100% responsive diseñada para atletas que buscan optimizar su rendimiento físico y alcanzar objetivos ambiciosos (como quebrar la barrera de los **4:30 min/km** en 10K/5K). Integra modelos de Inteligencia Artificial Multimodal para interpretar capturas de pantalla de relojes deportivos (Huawei Health, Garmin, Strava, Polar, Apple Watch), estructurar entrenamientos por bloques fisiológicos y ofrecer diagnósticos técnicos en tiempo real.
 
 ---
 
@@ -114,7 +114,7 @@ npm run dev --workspace=fitcoach-api
 ## 👤 Autor
 
 * **Creador & Desarrollador Principal:** [Freddy Ramirez](https://www.linkedin.com/in/freddyramirezv/)
-* **Proyecto:** FitCoach AI Platform
+* **Proyecto:** Proff IA Platform
 
 ---
 
