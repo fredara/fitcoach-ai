@@ -105,7 +105,7 @@ export default function AppShell() {
       </aside>
 
       {/* Main Content */}
-      <main className={`flex-1 flex flex-col min-h-0 ${isChatPage ? 'overflow-hidden' : 'overflow-y-auto'} pb-36 md:pb-6`}>
+      <main className={`flex-1 flex flex-col min-h-0 ${isChatPage ? 'overflow-hidden' : 'overflow-y-auto'}`}>
         <header className="md:hidden surface border-b border-white/5 p-4 flex justify-between items-center sticky top-0 z-10 shrink-0">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-accent">Proff IA</h1>
@@ -127,8 +127,11 @@ export default function AppShell() {
           )}
         </header>
         
-        <div className={`w-full flex-1 flex flex-col min-h-0 ${isChatPage ? 'p-3 md:p-6 max-w-5xl mx-auto' : 'p-4 md:p-8 max-w-7xl mx-auto pb-12 md:pb-4'}`}>
+        <div className={`w-full flex-1 flex flex-col min-h-0 ${isChatPage ? 'p-3 md:p-6 max-w-5xl mx-auto' : 'px-4 md:px-8 pt-6 md:pt-8 max-w-7xl mx-auto'}`}>
           <Outlet />
+          {!isChatPage && (
+            <div className="w-full shrink-0 block pointer-events-none" style={{ height: '90px', minHeight: '90px' }} aria-hidden="true" />
+          )}
         </div>
       </main>
 

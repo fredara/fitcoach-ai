@@ -578,12 +578,15 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
           localStorage.setItem('fitcoach_active_plan_v2', JSON.stringify(activePlan));
         }
 
-        const { data: sessions } = await supabase
-          .from('workout_sessions')
+        // 2. Obtener sesiones reales registradas en Supabase (training_sessions)
+        const { data: trainingSessions } = await supabase
+          .from('training_sessions')
           .select('*')
           .eq('user_id', userId);
 
-        if (sessions && sessions.length > 0) {
+        const sessions = trainingSessions || [];
+
+        if (sessions.length > 0) {
           setPlanState(prev => {
             let hasChanges = false;
             const newWeeks = prev.weeks.map(w => {
@@ -591,12 +594,24 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
                 const dayLinkKey = `${w.week_number}_${dIdx}`;
                 const isMatched = sessions.some(s => {
                   const raw = s.raw_data || {};
-                  const titleMatch = s.title && (
-                    s.title.toLowerCase().includes(d.title.toLowerCase()) ||
-                    d.title.toLowerCase().includes(s.title.toLowerCase()) ||
-                    s.title.includes(`Semana ${w.week_number}`)
-                  );
-                  return raw.linked_plan_day === dayLinkKey || titleMatch;
+                  const sTitle = (s.title || '').toLowerCase();
+                  const dTitle = (d.title || '').toLowerCase();
+                  const sDesc = (s.description || '').toLowerCase();
+                  
+                  const directLink = raw.linked_plan_day === dayLinkKey;
+                  const titleMatch = sTitle.includes(dTitle) || dTitle.includes(sTitle) || 
+                    sDesc.includes(dTitle) ||
+                    (sTitle.includes(`semana ${w.week_number}`) && (
+                      (dTitle.includes('intervalo') && sTitle.includes('intervalo')) ||
+                      (dTitle.includes('fartlek') && sTitle.includes('fartlek')) ||
+                      (dTitle.includes('base') && sTitle.includes('base')) ||
+                      (dTitle.includes('umbral') && sTitle.includes('umbral')) ||
+                      (dTitle.includes('tempo') && sTitle.includes('tempo')) ||
+                      (dTitle.includes('larga') && sTitle.includes('larga')) ||
+                      (dTitle.includes('fondo') && sTitle.includes('fondo'))
+                    ));
+
+                  return directLink || titleMatch;
                 });
 
                 if (isMatched && !d.completed) {
