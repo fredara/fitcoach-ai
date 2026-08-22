@@ -1,11 +1,31 @@
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../config/supabase';
-import { Home, Bot, Target, Calendar, Activity, User, LogOut } from 'lucide-react';
+import { Home, Bot, Target, Calendar, Activity, User, LogOut, Download } from 'lucide-react';
 
 export default function AppShell() {
   const { session } = useAuth();
   const location = useLocation();
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstallPWA = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
 
   const handleLogout = () => supabase.auth.signOut();
 
@@ -47,6 +67,17 @@ export default function AppShell() {
               </Link>
             );
           })}
+
+          {/* Botón Instalar App PWA en Desktop si está disponible */}
+          {deferredPrompt && (
+            <button
+              onClick={handleInstallPWA}
+              className="w-full flex items-center gap-3 p-3 rounded-xl bg-accent/15 text-accent hover:bg-accent hover:text-black font-semibold text-xs transition cursor-pointer border border-accent/20 mt-4 shadow-sm"
+            >
+              <Download size={18} />
+              Instalar App PWA
+            </button>
+          )}
         </nav>
 
         <div className="mt-auto border-t border-white/5 pt-4">
@@ -76,7 +107,17 @@ export default function AppShell() {
       {/* Main Content */}
       <main className={`flex-1 flex flex-col min-h-0 ${isChatPage ? 'overflow-hidden' : 'overflow-y-auto'} pb-20 md:pb-0`}>
         <header className="md:hidden surface border-b border-white/5 p-4 flex justify-between items-center sticky top-0 z-10 shrink-0">
-          <h1 className="text-xl font-bold text-accent">FitCoach AI</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl font-bold text-accent">FitCoach AI</h1>
+            {deferredPrompt && (
+              <button
+                onClick={handleInstallPWA}
+                className="text-[10px] font-bold bg-accent text-black px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm"
+              >
+                <Download size={12} /> Instalar
+              </button>
+            )}
+          </div>
           {session?.user?.user_metadata?.avatar_url ? (
             <img src={session.user.user_metadata.avatar_url} className="w-8 h-8 rounded-full object-cover" />
           ) : (
