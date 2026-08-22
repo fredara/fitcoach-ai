@@ -1,4 +1,4 @@
-name: FitCoach AI - CI/CD Pipeline
+name: Proff IA - CI/CD Pipeline
 
 on:
   push:
@@ -19,10 +19,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
 
       - name: 📦 Install Dependencies (Workspaces)
-        run: npm ci
+        run: npm install
 
       - name: 🔨 Typecheck & Build Backend API (fitcoach-api)
         run: npm run build --workspace=fitcoach-api

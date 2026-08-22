@@ -1,6 +1,9 @@
-# Dependencies
+# Dependencies & Lockfiles
 node_modules
 */node_modules
+package-lock.json
+*/package-lock.json
+*.lock
 
 # Build artifacts
 dist
