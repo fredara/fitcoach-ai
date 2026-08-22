@@ -1,11 +1,12 @@
 {
-  "name": "fitcoach-ai-app",
+  "name": "fitcoach-ai-monorepo",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "fitcoach-ai",
+    "fitcoach-api"
+  ],
   "scripts": {
-    "build": "cd fitcoach-ai && npm run build",
-    "dev": "npm run dev:frontend",
-    "dev:frontend": "cd fitcoach-ai && npm run dev",
-    "dev:api": "cd fitcoach-api && npm run dev"
+    "build": "npm run build --workspace=fitcoach-ai"
   }
 }

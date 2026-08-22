@@ -1,6 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "cd fitcoach-ai && npm run build",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build --workspace=fitcoach-ai",
   "outputDirectory": "fitcoach-ai/dist",
   "rewrites": [
     {
