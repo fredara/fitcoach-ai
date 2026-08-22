@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@theme {
+  --color-amoled-bg: #000000;
+  --color-amoled-surface: #0a0a0a;
+  --color-amoled-accent: #22d3ee;
+  --color-amoled-text: #fafafa;
+
+  --color-dark-bg: #111113;
+  --color-dark-surface: #1a1a1e;
+  --color-dark-accent: #60a5fa;
+  --color-dark-text: #e5e5e5;
+
+  --color-night-bg: #0b1120;
+  --color-night-surface: #111827;
+  --color-night-accent: #818cf8;
+  --color-night-text: #e0e7ff;
+
+  --color-forest-bg: #0a1a0f;
+  --color-forest-surface: #0f2518;
+  --color-forest-accent: #34d399;
+  --color-forest-text: #d1fae5;
+
+  --color-light-bg: #f8f9fa;
+  --color-light-surface: #ffffff;
+  --color-light-accent: #2563eb;
+  --color-light-text: #1f2937;
+}
+
+:root {
+  /* Default to dark */
+  --bg-color: var(--color-dark-bg);
+  --surface-color: var(--color-dark-surface);
+  --accent-color: var(--color-dark-accent);
+  --text-color: var(--color-dark-text);
+}
+
+[data-theme="amoled"] {
+  --bg-color: var(--color-amoled-bg);
+  --surface-color: var(--color-amoled-surface);
+  --accent-color: var(--color-amoled-accent);
+  --text-color: var(--color-amoled-text);
+}
+
+[data-theme="night"] {
+  --bg-color: var(--color-night-bg);
+  --surface-color: var(--color-night-surface);
+  --accent-color: var(--color-night-accent);
+  --text-color: var(--color-night-text);
+}
+
+[data-theme="forest"] {
+  --bg-color: var(--color-forest-bg);
+  --surface-color: var(--color-forest-surface);
+  --accent-color: var(--color-forest-accent);
+  --text-color: var(--color-forest-text);
+}
+
+[data-theme="light"] {
+  --bg-color: var(--color-light-bg);
+  --surface-color: var(--color-light-surface);
+  --accent-color: var(--color-light-accent);
+  --text-color: var(--color-light-text);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+.surface {
+  background-color: var(--surface-color);
+}
+
+.text-accent {
+  color: var(--accent-color);
+}
+
+.bg-accent {
+  background-color: var(--accent-color);
+}
+
+/* Custom Sleek Scrollbar for Modern Dark UI */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Utility to completely hide horizontal scrollbar on chips */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Date & Time Picker Indicator Visibility on Dark Theme */
+input[type="datetime-local"],
+input[type="date"],
+input[type="time"] {
+  color-scheme: dark;
+  color: #ffffff !important;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 1 !important;
+  padding: 4px;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.15);
+  filter: brightness(0) invert(1) !important;
+  transition: all 0.2s ease;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover,
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  background-color: var(--accent-color);
+  filter: brightness(0) !important;
+  transform: scale(1.1);
+}

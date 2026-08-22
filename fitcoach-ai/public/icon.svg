@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22d3ee" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="#0a0a0a" />
+  <path d="M256 96 C167.6 96 96 167.6 96 256 C96 344.4 167.6 416 256 416 C344.4 416 416 344.4 416 256 C416 167.6 344.4 96 256 96 Z" fill="none" stroke="url(#grad)" stroke-width="24" />
+  <!-- Running figure / Lightning Bolt -->
+  <path d="M280 160 L190 280 L250 280 L232 352 L322 232 L262 232 Z" fill="url(#grad)" />
+</svg>

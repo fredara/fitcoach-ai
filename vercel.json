@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "buildCommand": "cd fitcoach-ai && npm run build",
+  "outputDirectory": "fitcoach-ai/dist",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
